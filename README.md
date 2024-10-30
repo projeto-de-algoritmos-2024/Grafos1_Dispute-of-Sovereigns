@@ -7,7 +7,7 @@
 |Matrícula | Aluno |
 | -- | -- |
 | 202046087  |  Fabrício Macedo de Queiroz |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 202046004  |  Caio Moreira Sulz Gonsalves |
 
 ## Sobre 
 Descreva os objetivos do seu projeto e como ele funciona. 
