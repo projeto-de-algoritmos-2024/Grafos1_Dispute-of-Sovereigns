@@ -23,7 +23,7 @@ class Tabuleiro extends StatefulWidget {
   State<Tabuleiro> createState() => _TabuleiroState();
 }
 
-class _TabuleiroState extends State<Tabuleiro> { 
+class _TabuleiroState extends State<Tabuleiro> {
   // Parâmetro que define o tamanho do tabuleiro:
   int tamanho = 8;
   // Parâmetro para guardar o tamanho do lado do tabuleiro:
@@ -40,8 +40,8 @@ class _TabuleiroState extends State<Tabuleiro> {
         child: _buildGrid(context, tipo),
       ),
     );
-
   }
+
   Widget _buildGrid(BuildContext context, HexagonType type) {
     return InteractiveViewer(
       child: Center(
