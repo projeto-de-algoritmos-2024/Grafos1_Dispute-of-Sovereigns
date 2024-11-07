@@ -117,6 +117,11 @@ class _TabuleiroState extends State<Tabuleiro> {
     super.initState();
   }
 
+  bool movendo = false;
+  String casaMovendo = '';
+  List<String> antigaNovaPosicao = ['', ''];
+  Map<String, String> casasAtivas = {};
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +162,9 @@ class _TabuleiroState extends State<Tabuleiro> {
             color: getColor(coordinates.q, coordinates.r, tamanho),
             padding: 0.08,
             cornerRadius: 0.0,
-            child: GestureDetector(child: getPeca(coordinates.q, coordinates.r, tabuleiroGrafo),)
+            child: GestureDetector(child: getPeca(coordinates.q, coordinates.r, tabuleiroGrafo), onTap: (){
+              movimentar(tabuleiroGrafo, coordinates, movendo, casasAtivas, casaMovendo, antigaNovaPosicao);
+            },),
           ),
         ),
       ),

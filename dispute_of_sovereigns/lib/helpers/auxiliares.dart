@@ -188,50 +188,45 @@ getPeca(int q, int r, Grafo grafo) {
 }
 
 // todo
-// void onTap(Grafo grafo, dynamic coordinates, bool movendo, Map<String, String> casasAtivas) {
-//   No no = grafo.getNo('(${coordinates.q}, ${coordinates.r})')!;
+void movimentar(Grafo grafo, dynamic coordinates, bool movendo, Map<String, String> casasAtivas, String casaMovendo, List<String> antigaNovaPosicao) {
+  No no = grafo.getNo('(${coordinates.q}, ${coordinates.r})')!;
 
-//   print('Equipe: ${no.equipe}');
+  print('Equipe: ${no.equipe}');
 
-//   if (no.ocupado) {
-//     print('Casa ocupada');
+  if (no.ocupado) {
+    print('Casa ocupada');
 
-//     if (movendo) {
-//       for (String no in casasAtivas.keys) {
-//         No noAtual = grafo.getNo(no)!;
-//         noAtual.mover = false;
-//       }
-//     }
-//     movendo = true;
-//     casasAtivas = calcularMovimentos('(${coordinates.q}, ${coordinates.r})');
+    if (movendo) {
+      for (String no in casasAtivas.keys) {
+        No noAtual = grafo.getNo(no)!;
+        noAtual.mover = false;
+      }
+    }
+    movendo = true;
+    casasAtivas = calcularMovimentos('(${coordinates.q}, ${coordinates.r})', grafo);
 
-//     for (String no in casasAtivas.keys) {
-//       No noAtual = grafo.getNo(no)!;
+    for (String no in casasAtivas.keys) {
+      No noAtual = grafo.getNo(no)!;
 
-//       setState(() {
-//         noAtual.mover = true;
-//       });
-//     }
+      noAtual.mover = true;
+    }
 
-//     casaMovendo = '(${coordinates.q}, ${coordinates.r})';
-//     antigaNovaPosicao[0] = casaMovendo;
-//   } else {
-//     print('Casa vazia');
-//     casaMovendo = '';
-//     antigaNovaPosicao[0] = '';
-//     antigaNovaPosicao[1] = '';
-//     if (movendo) {
-//       for (String no in casasAtivas.keys) {
-//         No noAtual = grafo.getNo(no)!;
-
-//         setState(() {
-//           noAtual.mover = false;
-//         });
-//       }
-//       movendo = false;
-//     }
-//   }
-// }
+    casaMovendo = '(${coordinates.q}, ${coordinates.r})';
+    antigaNovaPosicao[0] = casaMovendo;
+  } else {
+    print('Casa vazia');
+    casaMovendo = '';
+    antigaNovaPosicao[0] = '';
+    antigaNovaPosicao[1] = '';
+    if (movendo) {
+      for (String no in casasAtivas.keys) {
+        No noAtual = grafo.getNo(no)!;
+        noAtual.mover = false;
+      }
+      movendo = false;
+    }
+  }
+}
 
 // Calcula os movimentos de cada peça
 Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
@@ -243,6 +238,7 @@ Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
       case ('conjurador'):
         visitados = grafo.bfsProfundidade(noOrigem, 2);
 
+        // Casas invalidas para movimento dessa peca
         List<String> invalidos = [];
 
         for (String no in visitados.keys) {
@@ -287,4 +283,27 @@ Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
     }
 
     return visitados;
+  }
+
+  void moverPeca(String origem, String destino, Grafo grafo, Map<String, String> casasAtivas, bool movendo, String casaMovendo, List<String> antigaNovaPosicao) {
+    No noOrigem = grafo.getNo(origem)!;
+    No noDestino = grafo.getNo(destino)!;
+
+    noDestino.ocupado = true;
+    noDestino.peca = noOrigem.peca;
+    noDestino.equipe = noOrigem.equipe;
+
+    noOrigem.ocupado = false;
+    noOrigem.peca = '';
+    noOrigem.equipe = '';
+
+    for (String no in casasAtivas.keys) {
+      No noAtual = grafo.getNo(no)!;
+
+        noAtual.mover = false;
+    }
+
+    movendo = false;
+    casaMovendo = '';
+    antigaNovaPosicao[1] = destino;
   }
