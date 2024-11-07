@@ -12,6 +12,7 @@
  * - Lista de Mapas, onde cada mapa contém as coordenadas (q, r) de uma casa vizinha do nó na posição informada.
  */
 import 'package:dispute_of_sovereigns/models/grafos.dart';
+import 'package:flutter/material.dart';
 
 List<Map<String, int>> casasVizinhas(Map<String, int> posicao, int lado) {
   // Direções possíveis para encontrar os vizinhos:
@@ -107,3 +108,183 @@ void criarArestas(Grafo grafo, int lado) {
   // Imprime a lista de adjacências do grafo no console:
   grafo.printGrafo();
 }
+
+// Mudar a cor das casas do tabuleiro
+Color getColor(int q, int r, int tamanho) {
+  if (q == 0 && (r == tamanho || r == -tamanho)) {
+    // return const Color(0xffee243d);
+    return const Color(0xff334224);
+  } else if (q.isEven && r.isEven) {
+    // return const Color(0xff281a2d);
+    return const Color(0xff739552);
+  } else {
+    // return const Color(0xff6b2341);
+    // return const Color(0xffffff33);
+    return const Color(0xffebecd0);
+  }
+}
+
+// Define a aparencia da casa do tabuleiro (personagens)
+getPeca(int q, int r, Grafo grafo) {
+  No no = grafo.getNo('($q, $r)')!;
+
+  Color equipe = no.equipe == 'brancas'
+      ? const Color(0xffaf2747)
+      : no.equipe == 'pretas'
+          ? const Color(0xff281a2d)
+          : Colors.white;
+
+  String icone = no.peca == 'conjurador'
+      ? 'feiticeiro2.png'
+      : no.peca == 'atacante'
+          ? 'assassino.png'
+          : no.peca == 'escudo'
+              ? 'escudo.png'
+              : no.peca == 'sentinela'
+                  ? 'visao.png'
+                  : '';
+
+  if (no.mover && no.ocupado) {
+    return GestureDetector(
+      child: Icon(
+        Icons.circle,
+        color: Colors.red.withOpacity(0.35),
+        size: 25,
+      ),
+    );
+  }
+  if (no.mover) {
+    return GestureDetector(
+      child: Icon(
+        Icons.circle,
+        color: Colors.black.withOpacity(0.35),
+        size: 25,
+      ),
+    );
+  }
+  if (no.ocupado) {
+    if (no.peca.isNotEmpty) {
+      return CircleAvatar(
+        backgroundColor: equipe,
+        radius: 20,
+        child: Image.asset(
+          'icons/$icone',
+          width: 25,
+          height: 25,
+        ),
+      );
+    } else {
+      return const CircleAvatar(
+        backgroundColor: Colors.grey,
+        radius: 17,
+        child: Icon(
+          Icons.question_mark_sharp,
+          color: Color.fromARGB(255, 197, 13, 13),
+          size: 15,
+        ),
+      );
+    }
+  }
+}
+
+// todo
+// void onTap(Grafo grafo, dynamic coordinates, bool movendo, Map<String, String> casasAtivas) {
+//   No no = grafo.getNo('(${coordinates.q}, ${coordinates.r})')!;
+
+//   print('Equipe: ${no.equipe}');
+
+//   if (no.ocupado) {
+//     print('Casa ocupada');
+
+//     if (movendo) {
+//       for (String no in casasAtivas.keys) {
+//         No noAtual = grafo.getNo(no)!;
+//         noAtual.mover = false;
+//       }
+//     }
+//     movendo = true;
+//     casasAtivas = calcularMovimentos('(${coordinates.q}, ${coordinates.r})');
+
+//     for (String no in casasAtivas.keys) {
+//       No noAtual = grafo.getNo(no)!;
+
+//       setState(() {
+//         noAtual.mover = true;
+//       });
+//     }
+
+//     casaMovendo = '(${coordinates.q}, ${coordinates.r})';
+//     antigaNovaPosicao[0] = casaMovendo;
+//   } else {
+//     print('Casa vazia');
+//     casaMovendo = '';
+//     antigaNovaPosicao[0] = '';
+//     antigaNovaPosicao[1] = '';
+//     if (movendo) {
+//       for (String no in casasAtivas.keys) {
+//         No noAtual = grafo.getNo(no)!;
+
+//         setState(() {
+//           noAtual.mover = false;
+//         });
+//       }
+//       movendo = false;
+//     }
+//   }
+// }
+
+// Calcula os movimentos de cada peça
+Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
+    No noOrigem = grafo.getNo(origem)!;
+
+    Map<String, String> visitados = {};
+
+    switch (noOrigem.peca) {
+      case ('conjurador'):
+        visitados = grafo.bfsProfundidade(noOrigem, 2);
+
+        List<String> invalidos = [];
+
+        for (String no in visitados.keys) {
+          var q = int.parse(no.split(', ')[0].split('(')[1]);
+          var r = int.parse(no.split(', ')[1].split(')')[0]);
+
+          if ((q.isOdd || r.isOdd)) {
+            invalidos.add(no);
+          }
+        }
+
+        for (String no in invalidos) {
+          visitados.remove(no);
+        }
+        break;
+      case 'atacante':
+        visitados = grafo.bfsProfundidade(noOrigem, 2);
+        break;
+      case 'escudo':
+        visitados = grafo.bfsProfundidade(noOrigem, 1);
+
+        List<String> invalidos = [];
+
+        for (String no in visitados.keys) {
+          var q = int.parse(no.split(', ')[0].split('(')[1]);
+          var r = int.parse(no.split(', ')[1].split(')')[0]);
+
+          if ((q.isEven && r.isEven)) {
+            invalidos.add(no);
+          }
+        }
+
+        for (String no in invalidos) {
+          visitados.remove(no);
+        }
+        break;
+      case 'sentinela':
+        visitados = grafo.bfsProfundidade(noOrigem, 1);
+        break;
+      default:
+        break;
+    }
+
+    return visitados;
+  }

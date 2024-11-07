@@ -41,6 +41,79 @@ class _TabuleiroState extends State<Tabuleiro> {
   @override
   void initState() {
     criarNos(tabuleiroGrafo, lado);
+
+    tabuleiroGrafo.getNo('(0, 8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(0, 8)')!.peca = 'sentinela';
+    tabuleiroGrafo.getNo('(0, 8)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(0, -8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(0, -8)')!.peca = 'sentinela';
+    tabuleiroGrafo.getNo('(0, -8)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(-2, -6)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-2, -6)')!.peca = 'conjurador';
+    tabuleiroGrafo.getNo('(-2, -6)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(2, 6)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(2, 6)')!.peca = 'conjurador';
+    tabuleiroGrafo.getNo('(2, 6)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(2, -8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(2, -8)')!.peca = 'conjurador';
+    tabuleiroGrafo.getNo('(2, -8)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(-2, 8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-2, 8)')!.peca = 'conjurador';
+    tabuleiroGrafo.getNo('(-2, 8)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(-1, -7)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-1, -7)')!.peca = 'escudo';
+    tabuleiroGrafo.getNo('(-1, -7)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(1, 7)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(1, 7)')!.peca = 'escudo';
+    tabuleiroGrafo.getNo('(1, 7)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(1, -8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(1, -8)')!.peca = 'escudo';
+    tabuleiroGrafo.getNo('(1, -8)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(-1, 8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-1, 8)')!.peca = 'escudo';
+    tabuleiroGrafo.getNo('(-1, 8)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(-1, -6)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-1, -6)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(-1, -6)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(1, 6)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(1, 6)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(1, 6)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(1, -7)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(1, -7)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(1, -7)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(-1, 7)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-1, 7)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(-1, 7)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(-3, -5)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-3, -5)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(-3, -5)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(3, 5)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(3, 5)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(3, 5)')!.equipe = 'brancas';
+
+    tabuleiroGrafo.getNo('(3, -8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(3, -8)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(3, -8)')!.equipe = 'pretas';
+
+    tabuleiroGrafo.getNo('(-3, 8)')!.ocupado = true;
+    tabuleiroGrafo.getNo('(-3, 8)')!.peca = 'atacante';
+    tabuleiroGrafo.getNo('(-3, 8)')!.equipe = 'brancas';
+
     super.initState();
   }
 
@@ -81,13 +154,10 @@ class _TabuleiroState extends State<Tabuleiro> {
           color: const Color(0xff0d101b),
           depth: tamanho,
           buildTile: (coordinates) => HexagonWidgetBuilder(
-            color: Colors.black,
+            color: getColor(coordinates.q, coordinates.r, tamanho),
             padding: 0.08,
             cornerRadius: 0.0,
-            child: GestureDetector(
-              child: Text("${coordinates.q}, ${coordinates.r}",
-                  style: const TextStyle(color: AppColors.lightblue)),
-            ),
+            child: GestureDetector(child: getPeca(coordinates.q, coordinates.r, tabuleiroGrafo),)
           ),
         ),
       ),

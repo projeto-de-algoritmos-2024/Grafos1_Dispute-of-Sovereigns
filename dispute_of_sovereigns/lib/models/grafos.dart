@@ -238,6 +238,46 @@ class Grafo {
   }
 
   /* 
+   * Retorna uma lista com os nós do menor caminho de um nó a outro, a partir da Lista de nós pais formada por uma BFS.
+   * 
+   * Parâmetros:
+   * - pai: "Lista" de nós pais obtida pela BFS.
+   * - inicio: nó de inicio do caminho.
+   * - fim: nó de fim do caminho.
+   * 
+   * Retorno:
+   * - Lista com ID's do menor caminho do nó inicio ao nó fim.
+   */
+  List<String> montarMenorCaminho(Map<String, String> pai, No inicio, No fim) {
+    // Lista para armazenar o caminho:
+    List<String> caminho = [];
+
+    // Atual recebe o ID do nó final:
+    String atual = fim.id;
+
+    // Repete enquanto o ID atual for diferente do ID do nó inicial:
+    while (atual != inicio.id) {
+      // Adiciona o ID atual na Lista de caminho:
+      caminho.add(atual);
+
+      // Atual recebe o ID do pai do nó atual:
+      atual = pai[atual]!;
+    }
+
+    // Adiciona o ID do nó inicial na Lista de caminho:
+    caminho.add(inicio.id);
+
+    // Inverte a Lista de caminho para ficar na ordem correta:
+    caminho = caminho.reversed.toList();
+
+    // Retorna a Lista de caminho:
+    return caminho;
+  }
+
+
+  
+
+  /* 
    * Printa os Nós do Grafo e suas adjacências.
    * 
    */
