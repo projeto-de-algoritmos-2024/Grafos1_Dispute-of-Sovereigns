@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/foundation.dart';
 
 class No {
@@ -21,8 +20,12 @@ class No {
   // Indica se a peça está num estado de se movimentar:
   bool mover = false;
 
+  // Indica se a casa é visivel:
+  bool visivel = false;
+
   // Construtor:
-  No(this.id, this.posicao, this.ocupado, this.peca, this.equipe, this.mover);
+  No(this.id, this.posicao, this.ocupado, this.peca, this.equipe, this.mover,
+      this.visivel);
 }
 
 // Classe para representar um Grafo:
@@ -47,9 +50,9 @@ class Grafo {
    * - mover: se a peça está num estado de se movimentar.
    */
   void addNo(String id, Map<String, int> posicao, bool ocupado, String peca,
-      String equipe, bool mover) {
+      String equipe, bool mover, bool visivel) {
     // Cria um novo nó:
-    No novoNo = No(id, posicao, ocupado, peca, equipe, mover);
+    No novoNo = No(id, posicao, ocupado, peca, equipe, mover, visivel);
 
     // Verifica se o nó já existe:
     if (adjacencias.containsKey(novoNo)) {
@@ -237,6 +240,75 @@ class Grafo {
     return pai;
   }
 
+  List<No> bfsPulso(No sentinela) {
+    // // Percorrer todos nós e settar como visiveis a cada 2 segundos com Timer.periodic:
+    // List<No> nos = grafo.adjacencias.keys.toList();
+
+    // Timer.periodic(Duration(milliseconds: 50), (timer) {
+    //   No no = nos.isNotEmpty ? nos.removeAt(0) : nos[0];
+    //   setState(() {
+    // no.visivel = true;
+    // if (nos.length == 1) {
+    //   timer.cancel();
+    // }
+    //   });
+    // });
+
+    // Lista para armazenar os Nós na ordem que foram visitados:
+    List<No> ordem = [];
+
+    // Adicionar o nó da peça Sentinela na Lista ordem:
+    ordem.add(sentinela);
+
+    // Lista para marcar os nós visitados:
+    List<String> visitados = [];
+
+    // Adicionar o nó da peça Sentinela na lista de visitados:
+    visitados.add(sentinela.id);
+
+    // Fila para controlar os nós cujos vizinhos serão visitados:
+    Queue<Map<No, int>> fila = Queue<Map<No, int>>();
+
+    // Adicionar o nó da peça Sentinela na Fila:
+    fila.add({sentinela: 0});
+
+    // Enquanto a Fila não estiver vazia continua a busca:
+    while (fila.isNotEmpty) {
+      // Remover o nó da frente da Fila:
+      Map<No, int> u = fila.removeFirst();
+
+      // Nó atual e a profundidade dele:
+      No atual = u.keys.first;
+      int profundidadeAtual = u.values.first;
+
+      // Se a profundidade do Nó atual for maior ou igual a profundidade máxima, para a busca:
+      if (profundidadeAtual >= 6) {
+        break;
+      }
+
+      // Obter os vizinhos do nó atual:
+      List<No>? vizinhos = adjacencias[atual];
+
+      // Visitar cada vizinho do nó atual:
+      for (No vizinho in vizinhos!) {
+        // Verifica se o vizinho não está na Lista de visitados:
+        if (!visitados.contains(vizinho.id)) {
+          // Adicionar o vizinho na Lista ordem:
+          ordem.add(vizinho);
+
+          // Adicionar o vizinho na Lista de visitados:
+          visitados.add(vizinho.id);
+
+          // Adicionar o vizinho na Fila para visitar seus vizinhos:
+          fila.add({vizinho: profundidadeAtual + 1});
+        }
+      }
+    }
+
+    // Retornar a Lista com a ordem dos nós visitados:
+    return ordem;
+  }
+
   /* 
    * Retorna uma lista com os nós do menor caminho de um nó a outro, a partir da Lista de nós pais formada por uma BFS.
    * 
@@ -273,9 +345,6 @@ class Grafo {
     // Retorna a Lista de caminho:
     return caminho;
   }
-
-
-  
 
   /* 
    * Printa os Nós do Grafo e suas adjacências.
