@@ -1,6 +1,6 @@
+import 'package:dispute_of_sovereigns/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hexagon/hexagon.dart';
-import 'package:dispute_of_sovereigns/constants/colors.dart';
 import 'package:dispute_of_sovereigns/helpers/auxiliares.dart';
 import 'package:dispute_of_sovereigns/models/grafos.dart';
 
@@ -13,14 +13,65 @@ class DisputaDosSoberanos extends StatelessWidget {
     return const MaterialApp(
       title: 'Disputa dos Soberanos',
       debugShowCheckedModeBanner: false,
-      home: Tabuleiro(),
+      home: Jogo(),
+    );
+  }
+}
+
+class Jogo extends StatefulWidget {
+  const Jogo({super.key});
+
+  @override
+  State<Jogo> createState() => _JogoState();
+}
+
+class _JogoState extends State<Jogo> {
+  @override
+  Widget build(BuildContext context) {
+    const int qntdAbas = 2;
+
+    // Instância do Grafo que representa o tabuleiro:
+    Grafo grafo = Grafo();
+
+    return DefaultTabController(
+      length: qntdAbas,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.darkblue,
+          titleSpacing: 0,
+          title: const TabBar(
+            labelColor: AppColors.lightlbluegrey,
+            textScaler: TextScaler.linear(1.35),
+            dividerHeight: 0,
+            indicatorColor: AppColors.darkdblue,
+            indicatorPadding:
+                EdgeInsets.only(left: -20, right: -20, bottom: -4),
+            tabs: [
+              Tab(text: "Jogo"),
+              Tab(text: "Grafo"),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Tabuleiro(grafo: grafo),
+            InteractiveViewer.builder(
+              builder: (context, viewport) {
+                return InteractiveViewer(child: Text("Pag 2"));
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
 // Classe do Tabuleiro:
 class Tabuleiro extends StatefulWidget {
-  const Tabuleiro({super.key});
+  const Tabuleiro({super.key, required this.grafo});
+
+  final Grafo grafo;
 
   @override
   State<Tabuleiro> createState() => _TabuleiroState();
@@ -35,84 +86,17 @@ class _TabuleiroState extends State<Tabuleiro> {
   // Parâmetro que define o tipo de formação hexagonal:
   HexagonType tipo = HexagonType.FLAT;
 
-  // Instância do Grafo que representa o tabuleiro:
-  Grafo tabuleiroGrafo = Grafo();
-
   @override
   void initState() {
-    criarNos(tabuleiroGrafo, lado);
+    criarNos(widget.grafo, lado);
 
-    tabuleiroGrafo.getNo('(0, 8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(0, 8)')!.peca = 'sentinela';
-    tabuleiroGrafo.getNo('(0, 8)')!.equipe = 'brancas';
+    widget.grafo.getNo('(0, 8)')!.ocupado = true;
+    widget.grafo.getNo('(0, 8)')!.peca = 'sentinela';
+    widget.grafo.getNo('(0, 8)')!.equipe = 'brancas';
 
-    tabuleiroGrafo.getNo('(0, -8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(0, -8)')!.peca = 'sentinela';
-    tabuleiroGrafo.getNo('(0, -8)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(-2, -6)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-2, -6)')!.peca = 'conjurador';
-    tabuleiroGrafo.getNo('(-2, -6)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(2, 6)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(2, 6)')!.peca = 'conjurador';
-    tabuleiroGrafo.getNo('(2, 6)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(2, -8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(2, -8)')!.peca = 'conjurador';
-    tabuleiroGrafo.getNo('(2, -8)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(-2, 8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-2, 8)')!.peca = 'conjurador';
-    tabuleiroGrafo.getNo('(-2, 8)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(-1, -7)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-1, -7)')!.peca = 'escudo';
-    tabuleiroGrafo.getNo('(-1, -7)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(1, 7)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(1, 7)')!.peca = 'escudo';
-    tabuleiroGrafo.getNo('(1, 7)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(1, -8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(1, -8)')!.peca = 'escudo';
-    tabuleiroGrafo.getNo('(1, -8)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(-1, 8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-1, 8)')!.peca = 'escudo';
-    tabuleiroGrafo.getNo('(-1, 8)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(-1, -6)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-1, -6)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(-1, -6)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(1, 6)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(1, 6)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(1, 6)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(1, -7)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(1, -7)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(1, -7)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(-1, 7)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-1, 7)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(-1, 7)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(-3, -5)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-3, -5)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(-3, -5)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(3, 5)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(3, 5)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(3, 5)')!.equipe = 'brancas';
-
-    tabuleiroGrafo.getNo('(3, -8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(3, -8)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(3, -8)')!.equipe = 'pretas';
-
-    tabuleiroGrafo.getNo('(-3, 8)')!.ocupado = true;
-    tabuleiroGrafo.getNo('(-3, 8)')!.peca = 'atacante';
-    tabuleiroGrafo.getNo('(-3, 8)')!.equipe = 'brancas';
+    widget.grafo.getNo('(0, -8)')!.ocupado = true;
+    widget.grafo.getNo('(0, -8)')!.peca = 'sentinela';
+    widget.grafo.getNo('(0, -8)')!.equipe = 'pretas';
 
     super.initState();
   }
@@ -162,9 +146,19 @@ class _TabuleiroState extends State<Tabuleiro> {
             color: getColor(coordinates.q, coordinates.r, tamanho),
             padding: 0.08,
             cornerRadius: 0.0,
-            child: GestureDetector(child: getPeca(coordinates.q, coordinates.r, tabuleiroGrafo), onTap: (){
-              movimentar(tabuleiroGrafo, coordinates, movendo, casasAtivas, casaMovendo, antigaNovaPosicao);
-            },),
+            child: GestureDetector(
+              child: getPeca(coordinates.q, coordinates.r, widget.grafo),
+              onTap: () {
+                setState(() {
+                  No? no =
+                      widget.grafo.getNo('${coordinates.q}, ${coordinates.r}');
+
+                  print(no);
+                });
+                // movimentar(widget.grafo, coordinates, movendo, casasAtivas,
+                //     casaMovendo, antigaNovaPosicao);
+              },
+            ),
           ),
         ),
       ),

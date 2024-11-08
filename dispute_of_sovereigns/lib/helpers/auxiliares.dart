@@ -168,7 +168,7 @@ getPeca(int q, int r, Grafo grafo) {
         backgroundColor: equipe,
         radius: 20,
         child: Image.asset(
-          'icons/$icone',
+          'assets/icons/$icone',
           width: 25,
           height: 25,
         ),
@@ -188,7 +188,13 @@ getPeca(int q, int r, Grafo grafo) {
 }
 
 // todo
-void movimentar(Grafo grafo, dynamic coordinates, bool movendo, Map<String, String> casasAtivas, String casaMovendo, List<String> antigaNovaPosicao) {
+void movimentar(
+    Grafo grafo,
+    dynamic coordinates,
+    bool movendo,
+    Map<String, String> casasAtivas,
+    String casaMovendo,
+    List<String> antigaNovaPosicao) {
   No no = grafo.getNo('(${coordinates.q}, ${coordinates.r})')!;
 
   print('Equipe: ${no.equipe}');
@@ -203,7 +209,8 @@ void movimentar(Grafo grafo, dynamic coordinates, bool movendo, Map<String, Stri
       }
     }
     movendo = true;
-    casasAtivas = calcularMovimentos('(${coordinates.q}, ${coordinates.r})', grafo);
+    casasAtivas =
+        calcularMovimentos('(${coordinates.q}, ${coordinates.r})', grafo);
 
     for (String no in casasAtivas.keys) {
       No noAtual = grafo.getNo(no)!;
@@ -230,80 +237,87 @@ void movimentar(Grafo grafo, dynamic coordinates, bool movendo, Map<String, Stri
 
 // Calcula os movimentos de cada peça
 Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
-    No noOrigem = grafo.getNo(origem)!;
+  No noOrigem = grafo.getNo(origem)!;
 
-    Map<String, String> visitados = {};
+  Map<String, String> visitados = {};
 
-    switch (noOrigem.peca) {
-      case ('conjurador'):
-        visitados = grafo.bfsProfundidade(noOrigem, 2);
+  switch (noOrigem.peca) {
+    case ('conjurador'):
+      visitados = grafo.bfsProfundidade(noOrigem, 2);
 
-        // Casas invalidas para movimento dessa peca
-        List<String> invalidos = [];
+      // Casas invalidas para movimento dessa peca
+      List<String> invalidos = [];
 
-        for (String no in visitados.keys) {
-          var q = int.parse(no.split(', ')[0].split('(')[1]);
-          var r = int.parse(no.split(', ')[1].split(')')[0]);
+      for (String no in visitados.keys) {
+        var q = int.parse(no.split(', ')[0].split('(')[1]);
+        var r = int.parse(no.split(', ')[1].split(')')[0]);
 
-          if ((q.isOdd || r.isOdd)) {
-            invalidos.add(no);
-          }
+        if ((q.isOdd || r.isOdd)) {
+          invalidos.add(no);
         }
+      }
 
-        for (String no in invalidos) {
-          visitados.remove(no);
+      for (String no in invalidos) {
+        visitados.remove(no);
+      }
+      break;
+    case 'atacante':
+      visitados = grafo.bfsProfundidade(noOrigem, 2);
+      break;
+    case 'escudo':
+      visitados = grafo.bfsProfundidade(noOrigem, 1);
+
+      List<String> invalidos = [];
+
+      for (String no in visitados.keys) {
+        var q = int.parse(no.split(', ')[0].split('(')[1]);
+        var r = int.parse(no.split(', ')[1].split(')')[0]);
+
+        if ((q.isEven && r.isEven)) {
+          invalidos.add(no);
         }
-        break;
-      case 'atacante':
-        visitados = grafo.bfsProfundidade(noOrigem, 2);
-        break;
-      case 'escudo':
-        visitados = grafo.bfsProfundidade(noOrigem, 1);
+      }
 
-        List<String> invalidos = [];
-
-        for (String no in visitados.keys) {
-          var q = int.parse(no.split(', ')[0].split('(')[1]);
-          var r = int.parse(no.split(', ')[1].split(')')[0]);
-
-          if ((q.isEven && r.isEven)) {
-            invalidos.add(no);
-          }
-        }
-
-        for (String no in invalidos) {
-          visitados.remove(no);
-        }
-        break;
-      case 'sentinela':
-        visitados = grafo.bfsProfundidade(noOrigem, 1);
-        break;
-      default:
-        break;
-    }
-
-    return visitados;
+      for (String no in invalidos) {
+        visitados.remove(no);
+      }
+      break;
+    case 'sentinela':
+      visitados = grafo.bfsProfundidade(noOrigem, 1);
+      break;
+    default:
+      break;
   }
 
-  void moverPeca(String origem, String destino, Grafo grafo, Map<String, String> casasAtivas, bool movendo, String casaMovendo, List<String> antigaNovaPosicao) {
-    No noOrigem = grafo.getNo(origem)!;
-    No noDestino = grafo.getNo(destino)!;
+  return visitados;
+}
 
-    noDestino.ocupado = true;
-    noDestino.peca = noOrigem.peca;
-    noDestino.equipe = noOrigem.equipe;
+void moverPeca(
+    String origem,
+    String destino,
+    Grafo grafo,
+    Map<String, String> casasAtivas,
+    bool movendo,
+    String casaMovendo,
+    List<String> antigaNovaPosicao) {
+  No noOrigem = grafo.getNo(origem)!;
+  No noDestino = grafo.getNo(destino)!;
 
-    noOrigem.ocupado = false;
-    noOrigem.peca = '';
-    noOrigem.equipe = '';
+  noDestino.ocupado = true;
+  noDestino.peca = noOrigem.peca;
+  noDestino.equipe = noOrigem.equipe;
 
-    for (String no in casasAtivas.keys) {
-      No noAtual = grafo.getNo(no)!;
+  noOrigem.ocupado = false;
+  noOrigem.peca = '';
+  noOrigem.equipe = '';
 
-        noAtual.mover = false;
-    }
+  for (String no in casasAtivas.keys) {
+    No noAtual = grafo.getNo(no)!;
 
-    movendo = false;
-    casaMovendo = '';
-    antigaNovaPosicao[1] = destino;
+    noAtual.mover = false;
   }
+
+  movendo = false;
+  casaMovendo = '';
+  antigaNovaPosicao[1] = destino;
+}
