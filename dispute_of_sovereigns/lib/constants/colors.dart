@@ -2,28 +2,6 @@ import 'package:flutter/material.dart';
 
 // Cores:
 class AppColors {
-  // Cor de peça ativa:
-  static const Color ativa = Color(0xff577277);
-  static Color ativaFog = const Color(0xff577277).withOpacity(0.5);
-
-  // Set chess.com tabuleiro padrão:
-  static const Color primariaEscura = Color(0xff334224);
-  static const Color primariaClara = Color(0xff739552);
-  static const Color primariaBranca = Color(0xffebecd0);
-
-  static Color primariaEscuraFog = const Color(0xff334224).withOpacity(0.7);
-  static Color primariaClaraFog = const Color(0xff739552).withOpacity(0.7);
-  static Color primariaBrancaFog = const Color(0xffebecd0).withOpacity(0.7);
-
-  // Set vermelho:
-  static const Color vermelhoEscura = Color(0xFF510E0E);
-  static const Color vermelhoClara = Color(0xFF99141D);
-  static const Color vermelhoBranca = Color(0xFFE3C9C9);
-
-  static Color vermelhoEscuraFog = const Color(0xFF510E0E).withOpacity(0.7);
-  static Color vermelhoClaraFog = const Color(0xFF99141D).withOpacity(0.7);
-  static Color vermelhoBrancaFog = const Color(0xFFE3C9C9).withOpacity(0.7);
-
   static Color invisible = Colors.black.withOpacity(0);
 
   static const Color dark = Color(0xff10141f);
