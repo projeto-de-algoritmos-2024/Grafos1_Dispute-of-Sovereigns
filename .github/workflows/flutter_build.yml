@@ -12,42 +12,42 @@ on:
 
 jobs:
   build:
+    name: Build APK, Web e Linux
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        platform: [android, web, linux]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Definindo diretorio
+        run: "cd ./dispute_of_sovereigns"
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+
       - name: Setup do Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.24.4"
-          channel: "stable"
 
       - name: Instalar dependências
         run: flutter pub get
-        working-directory: ./dispute_of_sovereigns
 
       - name: Build Android
         run: flutter build apk --release
-        working-directory: ./dispute_of_sovereigns
 
       - name: Build Web
         run: flutter build web
-        working-directory: ./dispute_of_sovereigns
 
       - name: Build Linux
         run: flutter build linux --release
-        working-directory: ./dispute_of_sovereigns
 
       - name: Disponibilizar build para download
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.platform }}-build
+          name: build-apk-web-linux
           path: |
             ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
             ${{ github.workspace }}/dispute_of_sovereigns/build/web
