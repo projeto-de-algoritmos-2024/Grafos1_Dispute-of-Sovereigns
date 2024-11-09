@@ -1,3 +1,4 @@
+import 'package:dispute_of_sovereigns/constants/colors.dart';
 import 'package:dispute_of_sovereigns/models/grafos.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +20,10 @@ class _VisualizaGrafoState extends State<VisualizaGrafo> {
     super.initState();
   }
 
-  Widget CardNo(No no, List<No> vizinhos) {
+  Widget cardNo(No no, List<No> vizinhos) {
     return Card(
-      color: no.ocupado ? Colors.red[50] : Colors.green[50],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: no.ocupado ? Colors.grey[400] : Colors.grey[300],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -39,40 +40,51 @@ class _VisualizaGrafoState extends State<VisualizaGrafo> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Movendo: ${no.mover}',
-                  style: const TextStyle(fontSize: 16),
+                  'Visível: ${no.visivel == false ? no.equipe == 'brancas' ? 'Sim' : 'Não' : no.visivel ? 'Sim' : 'Não'}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: AppColors.darkgrey,
+                  ),
                 ),
                 Chip(
-                  label: Text(no.ocupado ? 'Ocupado' : 'Livre'),
-                  backgroundColor: no.ocupado ? Colors.red : Colors.green,
+                  label: Text(no.ocupado ? 'Com Peça' : 'Sem Peça'),
+                  backgroundColor: no.ocupado ? Colors.red[700] : Colors.green,
                   labelStyle: const TextStyle(color: Colors.white),
                 ),
               ],
             ),
             if (no.ocupado)
               Padding(
-                padding: const EdgeInsets.only(top: 6),
+                padding: const EdgeInsets.only(top: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Peça: ${no.peca}',
                       style: const TextStyle(
-                          fontSize: 16, color: Colors.blueAccent),
-                    ),
-                    Text(
-                      'Equipe: ${no.equipe}',
-                      style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: no.equipe == 'Azul' ? Colors.blue : Colors.red,
+                        color: AppColors.darkdblue,
                       ),
+                    ),
+                    Chip(
+                      label: Text(no.equipe == 'brancas'
+                          ? 'Equipe branca'
+                          : 'Equipe preta'),
+                      backgroundColor: no.equipe == 'brancas'
+                          ? Colors.grey[300]
+                          : AppColors.oceanblue,
+                      labelStyle: TextStyle(
+                          color: no.equipe == 'brancas'
+                              ? AppColors.oceanblue
+                              : Colors.white),
                     ),
                   ],
                 ),
               ),
             const SizedBox(height: 8),
-            const Divider(),
+            const Divider(
+              color: AppColors.darkgrey,
+            ),
             const Text(
               'Vizinhos:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -84,9 +96,9 @@ class _VisualizaGrafoState extends State<VisualizaGrafo> {
                 return Chip(
                   label: Text(vizinho.id),
                   backgroundColor:
-                      vizinho.ocupado ? Colors.red[100] : Colors.green[100],
+                      vizinho.ocupado ? AppColors.darkgrey : Colors.grey[300],
                   labelStyle: TextStyle(
-                      color: vizinho.ocupado ? Colors.red : Colors.green),
+                      color: vizinho.ocupado ? Colors.white : Colors.black),
                 );
               }).toList(),
             ),
@@ -99,15 +111,40 @@ class _VisualizaGrafoState extends State<VisualizaGrafo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //   appBar: AppBar(
+      //     title: Padding(
+      //       padding: const EdgeInsets.only(bottom: 10),
+      //       child: Column(
+      //         mainAxisAlignment: MainAxisAlignment.start,
+      //         crossAxisAlignment: CrossAxisAlignment.start,
+      //         children: [
+      //           // Quantidade de nós e arestas:
+      //           Text(
+      //             'Quantidade de nós: ${grafo.qntdNos}',
+      //             style: const TextStyle(
+      //                 fontSize: 18, color: AppColors.lightlbluegrey),
+      //           ),
+      //           const SizedBox(height: 8),
+      //           Text(
+      //             'Quantidade de arestas: ${grafo.qntdArestas}',
+      //             style: const TextStyle(
+      //                 fontSize: 18, color: AppColors.lightlbluegrey),
+      //           ),
+      //         ],
+      //       ),
+      //     ),
+      //     backgroundColor: AppColors.darkblue,
+      //   ),
+      backgroundColor: AppColors.dark,
       body: ListView.builder(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24.0),
         itemCount: grafo.adjacencias.length,
         itemBuilder: (context, index) {
           final entry = grafo.adjacencias.entries.elementAt(index);
           final no = entry.key;
           final vizinhos = entry.value;
 
-          return CardNo(no, vizinhos);
+          return cardNo(no, vizinhos);
         },
       ),
     );

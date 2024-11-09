@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:dispute_of_sovereigns/constants/colors.dart';
 import 'package:dispute_of_sovereigns/models/grafos.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +109,27 @@ void criarArestas(Grafo grafo, int lado) {
   }
 }
 
+/* 
+* Desenha o menor caminho do nó de início ao nó de fim.
+* 
+* Parâmetros:
+* - inicio: ID do nó de início.
+* - fim: ID do nó de fim.
+*/
+void desenharCaminho(
+    String inicio, String fim, Grafo grafo, Function callback) {
+  Map<String, String> visitados = grafo.bfs(grafo.getNo(inicio)!);
+
+  List<String> caminho = grafo.montarMenorCaminho(
+      visitados, grafo.getNo(inicio)!, grafo.getNo(fim)!);
+
+  for (String no in caminho) {
+    No noAtual = grafo.getNo(no)!;
+    noAtual.ocupado = true;
+  }
+  callback();
+}
+
 // Mudar a cor das casas do tabuleiro
 Color getColor(
     int q, int r, int tamanho, Grafo grafo, List<String> antigaNovaPosicao) {
@@ -150,6 +171,9 @@ getPeca(
     Map<String, String> casasAtivas,
     String casaMovendo,
     List<String> antigaNovaPosicao,
+    int rodada,
+    Function attTurno,
+    Function mostrarVencedor,
     Function callback) {
   No no = grafo.getNo('($q, $r)')!;
 
@@ -178,7 +202,11 @@ getPeca(
       ),
       onTap: () {
         trocarLugarPeca(callback, casaMovendo, '($q, $r)', grafo, casasAtivas,
-            movendo, casaMovendo, antigaNovaPosicao);
+            movendo, casaMovendo, mostrarVencedor, antigaNovaPosicao);
+        attTurno();
+        Timer(const Duration(seconds: 5), () {
+          computadorJoga(grafo, attTurno, mostrarVencedor);
+        });
       },
     );
   }
@@ -191,7 +219,11 @@ getPeca(
       ),
       onTap: () {
         trocarLugarPeca(callback, casaMovendo, '($q, $r)', grafo, casasAtivas,
-            movendo, casaMovendo, antigaNovaPosicao);
+            movendo, casaMovendo, mostrarVencedor, antigaNovaPosicao);
+        attTurno();
+        Timer(const Duration(seconds: 11), () {
+          computadorJoga(grafo, attTurno, mostrarVencedor);
+        });
       },
     );
   }
@@ -280,7 +312,6 @@ Map<String, String> calcularMovimentos(String origem, Grafo grafo) {
   return visitados;
 }
 
-// TODO
 movimentar(
     Function callback,
     Grafo grafo,
@@ -337,21 +368,63 @@ void trocarLugarPeca(
     Map<String, String> casasAtivas,
     bool movendo,
     String casaMovendo,
+    Function mostrarVencedor,
     List<String> antigaNovaPosicao) {
   No noOrigem = grafo.getNo(origem)!;
   No noDestino = grafo.getNo(destino)!;
 
+  No tempOrigem = No("${noOrigem.id}_temp", noOrigem.posicao, noOrigem.ocupado,
+      noOrigem.peca, noOrigem.equipe, noOrigem.mover, noOrigem.visivel);
+  No tempDestino = No(
+      "${noDestino.id}_temp",
+      noDestino.posicao,
+      noDestino.ocupado,
+      noDestino.peca,
+      noDestino.equipe,
+      noDestino.mover,
+      noDestino.visivel);
+
   noDestino.ocupado = true;
   noDestino.peca = noOrigem.peca;
   noDestino.equipe = noOrigem.equipe;
-  noDestino.visivel = true;
+  if (noDestino.equipe == 'brancas') {
+    noDestino.visivel = true;
+  }
 
   noOrigem.ocupado = false;
   noOrigem.peca = '';
   noOrigem.equipe = '';
   noOrigem.visivel = false;
 
-  List<No> revelados = pulsoSentinela(grafo, callback);
+  bool vitoria = false;
+
+  if (tempOrigem.peca == 'sentinela' &&
+      tempOrigem.equipe == 'brancas' &&
+      tempDestino.id == '(0, -8)_temp') {
+    vitoria = true;
+    mostrarVencedor('Vitória verdadeira do Jogador');
+  } else if (tempDestino.peca == 'sentinela' &&
+      tempDestino.equipe == 'pretas') {
+    vitoria = true;
+    mostrarVencedor('Vitória do Jogador');
+  }
+
+  movendo = false;
+  casaMovendo = '';
+  if (noDestino.equipe == 'brancas') {
+    antigaNovaPosicao[1] = destino;
+  }
+
+  callback();
+
+  if (noDestino.equipe == 'brancas' && !vitoria) {
+    List<No> revelados = pulsoSentinela(grafo, callback);
+
+    Timer(const Duration(seconds: 10), () {
+      colocarFog(revelados);
+      callback();
+    });
+  }
 
   for (String no in casasAtivas.keys) {
     No noAtual = grafo.getNo(no)!;
@@ -359,15 +432,7 @@ void trocarLugarPeca(
     noAtual.mover = false;
   }
 
-  movendo = false;
-  casaMovendo = '';
-  antigaNovaPosicao[1] = destino;
   callback();
-
-  Timer(const Duration(seconds: 10), () {
-    colocarFog(revelados);
-    callback();
-  });
 }
 
 List<No> pulsoSentinela(Grafo grafo, Function callback) {
@@ -409,10 +474,91 @@ void colocarFog(List<No> revelados) {
   }
 }
 
-void estadoPartida(int rodada) {
-  if (rodada % 2 == 0) {
-    // PC
-  } else {
+jogadorJogar(
+    int rodada,
+    Grafo grafo,
+    dynamic coordinates,
+    bool movendo,
+    Map<String, String> casasAtivas,
+    String casaMovendo,
+    List<String> antigaNovaPosicao,
+    Function attTurno,
+    Function mostrarVencedor,
+    Function callback) {
+  if (rodada % 2 != 0) {
     // Jogador
+    var retorno = movimentar(callback, grafo, coordinates, movendo, casasAtivas,
+        casaMovendo, antigaNovaPosicao);
+
+    movendo = retorno[0];
+    casaMovendo = retorno[1];
+    casasAtivas = retorno[2];
+    antigaNovaPosicao = retorno[3];
+
+    return [movendo, casaMovendo, casasAtivas, antigaNovaPosicao];
   }
+}
+
+computadorJoga(Grafo grafo, Function attTurno, Function mostrarVencedor) {
+  List<No> nos = [];
+
+  for (No no in grafo.adjacencias.keys) {
+    if (no.equipe == 'pretas') {
+      nos.add(no);
+    }
+  }
+
+  // Selecionar um aleatoriamente com random:
+  final random = Random();
+  No noOrigem = nos[random.nextInt(nos.length)];
+
+  Map<String, String> possibilidades = calcularMovimentos(noOrigem.id, grafo);
+
+  if (possibilidades.isNotEmpty) {
+    String destino =
+        possibilidades.keys.elementAt(random.nextInt(possibilidades.length));
+
+    No noDestino = grafo.getNo(destino)!;
+
+    No tempOrigem = No(
+        "${noOrigem.id}_temp",
+        noOrigem.posicao,
+        noOrigem.ocupado,
+        noOrigem.peca,
+        noOrigem.equipe,
+        noOrigem.mover,
+        noOrigem.visivel);
+    No tempDestino = No(
+        "${noDestino.id}_temp",
+        noDestino.posicao,
+        noDestino.ocupado,
+        noDestino.peca,
+        noDestino.equipe,
+        noDestino.mover,
+        noDestino.visivel);
+
+    noDestino.ocupado = true;
+    noDestino.peca = noOrigem.peca;
+    noDestino.equipe = noOrigem.equipe;
+
+    noOrigem.ocupado = false;
+    noOrigem.peca = '';
+    noOrigem.equipe = '';
+    noOrigem.visivel = false;
+
+    if (tempOrigem.peca == 'sentinela' &&
+        tempOrigem.equipe == 'pretas' &&
+        tempDestino.id == '(0, 8)_temp') {
+      mostrarVencedor('Vitória verdadeira do Computador');
+    } else if (tempDestino.peca == 'sentinela' &&
+        tempDestino.equipe == 'brancas') {
+      mostrarVencedor('Vitória do Computador');
+    }
+
+    attTurno();
+  }
+}
+
+void vitoria(String vencedor, Function mostrarVencedor) {
+  mostrarVencedor(vencedor);
 }

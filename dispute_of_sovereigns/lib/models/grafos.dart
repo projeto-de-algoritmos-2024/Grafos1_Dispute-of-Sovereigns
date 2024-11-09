@@ -147,13 +147,20 @@ class Grafo {
 
       // Visitar cada vizinho do nó atual:
       for (No vizinho in vizinhos!) {
+        if (vizinho.ocupado && vizinho.equipe != 'brancas') {
+          vizinho.peca = 'inimigo';
+        } else if (vizinho.ocupado && vizinho.equipe == 'brancas') {
+          vizinho.peca = 'aliado';
+        }
+
         // Verifica se o vizinho não está na Lista de pais, não está na Lista de visitados e se não está ocupado:
-        if (!pai.containsKey(vizinho.id) &&
-            !visitados.contains(vizinho.id) &&
-            !vizinho.ocupado) {
+        if (!pai.containsKey(vizinho.id) && !visitados.contains(vizinho.id)) {
+          if (vizinho.ocupado) {
+            continue;
+          }
+
           // Adicionar o vizinho na Lista de pais como filho do nó atual:
           pai[vizinho.id] = atual.id;
-
           // Adicionar o vizinho na Lista de visitados:
           visitados.add(vizinho.id);
 
@@ -331,6 +338,10 @@ class Grafo {
     while (atual != inicio.id) {
       // Adiciona o ID atual na Lista de caminho:
       caminho.add(atual);
+
+      if (pai[atual] == null) {
+        break;
+      }
 
       // Atual recebe o ID do pai do nó atual:
       atual = pai[atual]!;
