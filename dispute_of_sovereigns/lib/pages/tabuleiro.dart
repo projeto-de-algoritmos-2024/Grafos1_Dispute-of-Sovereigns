@@ -67,9 +67,9 @@ class _TabuleiroState extends State<Tabuleiro>
     criarNos(grafo, lado);
 
     // TODO criar uma função de setup do tabuleiro
-    grafo.getNo('(0, -7)')!.ocupado = true;
-    grafo.getNo('(0, -7)')!.peca = 'sentinela';
-    grafo.getNo('(0, -7)')!.equipe = 'brancas';
+    grafo.getNo('(0, 8)')!.ocupado = true;
+    grafo.getNo('(0, 8)')!.peca = 'sentinela';
+    grafo.getNo('(0, 8)')!.equipe = 'brancas';
 
     grafo.getNo('(0, -8)')!.ocupado = true;
     grafo.getNo('(0, -8)')!.peca = 'sentinela';
