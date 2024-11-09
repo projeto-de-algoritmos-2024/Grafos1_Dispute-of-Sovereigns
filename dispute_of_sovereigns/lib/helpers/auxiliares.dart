@@ -141,11 +141,11 @@ Color getColor(
       return AppColors.ativa;
     }
     if (q == 0 && (r == tamanho || r == -tamanho)) {
-      return AppColors.vermelhoEscura;
+      return AppColors.primariaEscura;
     } else if (q.isEven && r.isEven) {
-      return AppColors.vermelhoClara;
+      return AppColors.primariaClara;
     } else {
-      return AppColors.vermelhoBranca;
+      return AppColors.primariaBranca;
     }
   } else {
     if (antigaNovaPosicao[0] == '($q, $r)' ||
@@ -153,11 +153,11 @@ Color getColor(
       return AppColors.ativaFog;
     }
     if (q == 0 && (r == tamanho || r == -tamanho)) {
-      return AppColors.vermelhoEscuraFog;
+      return AppColors.primariaEscuraFog;
     } else if (q.isEven && r.isEven) {
-      return AppColors.vermelhoClaraFog;
+      return AppColors.primariaClaraFog;
     } else {
-      return AppColors.vermelhoBrancaFog;
+      return AppColors.primariaBrancaFog;
     }
   }
 }
@@ -204,7 +204,7 @@ getPeca(
         trocarLugarPeca(callback, casaMovendo, '($q, $r)', grafo, casasAtivas,
             movendo, casaMovendo, mostrarVencedor, antigaNovaPosicao);
         attTurno();
-        Timer(const Duration(seconds: 5), () {
+        Timer(const Duration(seconds: 8), () {
           computadorJoga(grafo, attTurno, mostrarVencedor);
         });
       },
@@ -237,8 +237,8 @@ getPeca(
         radius: 20,
         child: Image.asset(
           'assets/icons/$icone',
-          width: 25,
-          height: 25,
+          width: 33,
+          height: 33,
         ),
       );
     } else {
@@ -420,7 +420,7 @@ void trocarLugarPeca(
   if (noDestino.equipe == 'brancas' && !vitoria) {
     List<No> revelados = pulsoSentinela(grafo, callback);
 
-    Timer(const Duration(seconds: 10), () {
+    Timer(const Duration(seconds: 12), () {
       colocarFog(revelados);
       callback();
     });
@@ -451,7 +451,7 @@ List<No> pulsoSentinela(Grafo grafo, Function callback) {
 
   nos.removeAt(0);
 
-  Timer.periodic(const Duration(milliseconds: 100), (timer) {
+  Timer.periodic(const Duration(milliseconds: 50), (timer) {
     No noAtual;
 
     if (nos.isNotEmpty) {
@@ -561,4 +561,152 @@ computadorJoga(Grafo grafo, Function attTurno, Function mostrarVencedor) {
 
 void vitoria(String vencedor, Function mostrarVencedor) {
   mostrarVencedor(vencedor);
+}
+
+void setupTabuleiro(Grafo grafo) {
+  grafo.getNo('(0, 8)')!.ocupado = true;
+  grafo.getNo('(0, 8)')!.peca = 'sentinela';
+  grafo.getNo('(0, 8)')!.equipe = 'brancas';
+
+  grafo.getNo('(0, -8)')!.ocupado = true;
+  grafo.getNo('(0, -8)')!.peca = 'sentinela';
+  grafo.getNo('(0, -8)')!.equipe = 'pretas';
+
+  grafo.getNo('(0, 6)')!.ocupado = true;
+  grafo.getNo('(0, 6)')!.peca = 'atacante';
+  grafo.getNo('(0, 6)')!.equipe = 'brancas';
+
+  grafo.getNo('(0, -6)')!.ocupado = true;
+  grafo.getNo('(0, -6)')!.peca = 'atacante';
+  grafo.getNo('(0, -6)')!.equipe = 'pretas';
+
+  grafo.getNo('(-4, 8)')!.ocupado = true;
+  grafo.getNo('(-4, 8)')!.peca = 'conjurador';
+  grafo.getNo('(-4, 8)')!.equipe = 'brancas';
+
+  grafo.getNo('(4, 4)')!.ocupado = true;
+  grafo.getNo('(4, 4)')!.peca = 'conjurador';
+  grafo.getNo('(4, 4)')!.equipe = 'brancas';
+
+  grafo.getNo('(-4, -4)')!.ocupado = true;
+  grafo.getNo('(-4, -4)')!.peca = 'conjurador';
+  grafo.getNo('(-4, -4)')!.equipe = 'pretas';
+
+  grafo.getNo('(4, -8)')!.ocupado = true;
+  grafo.getNo('(4, -8)')!.peca = 'conjurador';
+  grafo.getNo('(4, -8)')!.equipe = 'pretas';
+
+  grafo.getNo('(0, 7)')!.ocupado = true;
+  grafo.getNo('(0, 7)')!.peca = 'escudo';
+  grafo.getNo('(0, 7)')!.equipe = 'brancas';
+
+  grafo.getNo('(-3, 8)')!.ocupado = true;
+  grafo.getNo('(-3, 8)')!.peca = 'escudo';
+  grafo.getNo('(-3, 8)')!.equipe = 'brancas';
+
+  grafo.getNo('(-1, 8)')!.ocupado = true;
+  grafo.getNo('(-1, 8)')!.peca = 'escudo';
+  grafo.getNo('(-1, 8)')!.equipe = 'brancas';
+
+  grafo.getNo('(1, 7)')!.ocupado = true;
+  grafo.getNo('(1, 7)')!.peca = 'escudo';
+  grafo.getNo('(1, 7)')!.equipe = 'brancas';
+
+  grafo.getNo('(3, 5)')!.ocupado = true;
+  grafo.getNo('(3, 5)')!.peca = 'escudo';
+  grafo.getNo('(3, 5)')!.equipe = 'brancas';
+
+  grafo.getNo('(0, -7)')!.ocupado = true;
+  grafo.getNo('(0, -7)')!.peca = 'escudo';
+  grafo.getNo('(0, -7)')!.equipe = 'pretas';
+
+  grafo.getNo('(-1, -7)')!.ocupado = true;
+  grafo.getNo('(-1, -7)')!.peca = 'escudo';
+  grafo.getNo('(-1, -7)')!.equipe = 'pretas';
+
+  grafo.getNo('(1, -8)')!.ocupado = true;
+  grafo.getNo('(1, -8)')!.peca = 'escudo';
+  grafo.getNo('(1, -8)')!.equipe = 'pretas';
+
+  grafo.getNo('(3, -8)')!.ocupado = true;
+  grafo.getNo('(3, -8)')!.peca = 'escudo';
+  grafo.getNo('(3, -8)')!.equipe = 'pretas';
+
+  grafo.getNo('(-3, -5)')!.ocupado = true;
+  grafo.getNo('(-3, -5)')!.peca = 'escudo';
+  grafo.getNo('(-3, -5)')!.equipe = 'pretas';
+}
+
+void setupTabuleiroDidatico(Grafo grafo) {
+  grafo.getNo('(0, -1)')!.ocupado = true;
+  grafo.getNo('(0, -1)')!.peca = 'sentinela';
+  grafo.getNo('(0, -1)')!.equipe = 'brancas';
+
+  grafo.getNo('(2, -6)')!.ocupado = true;
+  grafo.getNo('(2, -6)')!.peca = 'sentinela';
+  grafo.getNo('(2, -6)')!.equipe = 'pretas';
+
+  grafo.getNo('(2, -4)')!.ocupado = true;
+  grafo.getNo('(2, -4)')!.peca = 'conjurador';
+  grafo.getNo('(2, -4)')!.equipe = 'brancas';
+
+  grafo.getNo('(-2, 0)')!.ocupado = true;
+  grafo.getNo('(-2, 0)')!.peca = 'conjurador';
+  grafo.getNo('(-2, 0)')!.equipe = 'brancas';
+
+  grafo.getNo('(4, -6)')!.ocupado = true;
+  grafo.getNo('(4, -6)')!.peca = 'conjurador';
+  grafo.getNo('(4, -6)')!.equipe = 'pretas';
+
+  grafo.getNo('(-2, -2)')!.ocupado = true;
+  grafo.getNo('(-2, -2)')!.peca = 'conjurador';
+  grafo.getNo('(-2, -2)')!.equipe = 'pretas';
+
+  grafo.getNo('(0, -2)')!.ocupado = true;
+  grafo.getNo('(0, -2)')!.peca = 'atacante';
+  grafo.getNo('(0, -2)')!.equipe = 'brancas';
+
+  grafo.getNo('(0, -4)')!.ocupado = true;
+  grafo.getNo('(0, -4)')!.peca = 'atacante';
+  grafo.getNo('(0, -4)')!.equipe = 'pretas';
+
+  grafo.getNo('(1, -1)')!.ocupado = true;
+  grafo.getNo('(1, -1)')!.peca = 'escudo';
+  grafo.getNo('(1, -1)')!.equipe = 'brancas';
+
+  grafo.getNo('(2, -1)')!.ocupado = true;
+  grafo.getNo('(2, -1)')!.peca = 'escudo';
+  grafo.getNo('(2, -1)')!.equipe = 'brancas';
+
+  grafo.getNo('(-2, 1)')!.ocupado = true;
+  grafo.getNo('(-2, 1)')!.peca = 'escudo';
+  grafo.getNo('(-2, 1)')!.equipe = 'brancas';
+
+  grafo.getNo('(-1, 2)')!.ocupado = true;
+  grafo.getNo('(-1, 2)')!.peca = 'escudo';
+  grafo.getNo('(-1, 2)')!.equipe = 'brancas';
+
+  grafo.getNo('(1, 1)')!.ocupado = true;
+  grafo.getNo('(1, 1)')!.peca = 'escudo';
+  grafo.getNo('(1, 1)')!.equipe = 'brancas';
+
+  grafo.getNo('(2, -7)')!.ocupado = true;
+  grafo.getNo('(2, -7)')!.peca = 'escudo';
+  grafo.getNo('(2, -7)')!.equipe = 'pretas';
+
+  grafo.getNo('(0, -5)')!.ocupado = true;
+  grafo.getNo('(0, -5)')!.peca = 'escudo';
+  grafo.getNo('(0, -5)')!.equipe = 'pretas';
+
+  grafo.getNo('(-3, -4)')!.ocupado = true;
+  grafo.getNo('(-3, -4)')!.peca = 'escudo';
+  grafo.getNo('(-3, -4)')!.equipe = 'pretas';
+
+  grafo.getNo('(1, -4)')!.ocupado = true;
+  grafo.getNo('(1, -4)')!.peca = 'escudo';
+  grafo.getNo('(1, -4)')!.equipe = 'pretas';
+
+  grafo.getNo('(3, -6)')!.ocupado = true;
+  grafo.getNo('(3, -6)')!.peca = 'escudo';
+  grafo.getNo('(3, -6)')!.equipe = 'pretas';
 }

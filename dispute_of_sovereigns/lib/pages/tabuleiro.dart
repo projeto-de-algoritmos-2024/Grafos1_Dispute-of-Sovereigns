@@ -66,74 +66,8 @@ class _TabuleiroState extends State<Tabuleiro>
     grafo = widget.grafo;
     criarNos(grafo, lado);
 
-    // TODO criar uma função de setup do tabuleiro
-    grafo.getNo('(0, 8)')!.ocupado = true;
-    grafo.getNo('(0, 8)')!.peca = 'sentinela';
-    grafo.getNo('(0, 8)')!.equipe = 'brancas';
-
-    grafo.getNo('(0, -8)')!.ocupado = true;
-    grafo.getNo('(0, -8)')!.peca = 'sentinela';
-    grafo.getNo('(0, -8)')!.equipe = 'pretas';
-
-    grafo.getNo('(0, -6)')!.ocupado = true;
-    grafo.getNo('(0, -6)')!.peca = 'conjurador';
-    grafo.getNo('(0, -6)')!.equipe = 'pretas';
-
-    grafo.getNo('(2, 6)')!.ocupado = true;
-    grafo.getNo('(2, 6)')!.peca = 'conjurador';
-    grafo.getNo('(2, 6)')!.equipe = 'brancas';
-
-    grafo.getNo('(2, -8)')!.ocupado = true;
-    grafo.getNo('(2, -8)')!.peca = 'conjurador';
-    grafo.getNo('(2, -8)')!.equipe = 'pretas';
-
-    grafo.getNo('(-2, 8)')!.ocupado = true;
-    grafo.getNo('(-2, 8)')!.peca = 'conjurador';
-    grafo.getNo('(-2, 8)')!.equipe = 'brancas';
-
-    grafo.getNo('(-1, -7)')!.ocupado = true;
-    grafo.getNo('(-1, -7)')!.peca = 'escudo';
-    grafo.getNo('(-1, -7)')!.equipe = 'pretas';
-
-    grafo.getNo('(1, 7)')!.ocupado = true;
-    grafo.getNo('(1, 7)')!.peca = 'escudo';
-    grafo.getNo('(1, 7)')!.equipe = 'brancas';
-
-    grafo.getNo('(1, -8)')!.ocupado = true;
-    grafo.getNo('(1, -8)')!.peca = 'escudo';
-    grafo.getNo('(1, -8)')!.equipe = 'pretas';
-
-    grafo.getNo('(-1, 8)')!.ocupado = true;
-    grafo.getNo('(-1, 8)')!.peca = 'escudo';
-    grafo.getNo('(-1, 8)')!.equipe = 'brancas';
-
-    grafo.getNo('(-1, -6)')!.ocupado = true;
-    grafo.getNo('(-1, -6)')!.peca = 'atacante';
-    grafo.getNo('(-1, -6)')!.equipe = 'pretas';
-
-    grafo.getNo('(1, 6)')!.ocupado = true;
-    grafo.getNo('(1, 6)')!.peca = 'atacante';
-    grafo.getNo('(1, 6)')!.equipe = 'brancas';
-
-    grafo.getNo('(-1, 7)')!.ocupado = true;
-    grafo.getNo('(-1, 7)')!.peca = 'atacante';
-    grafo.getNo('(-1, 7)')!.equipe = 'brancas';
-
-    grafo.getNo('(-3, -5)')!.ocupado = true;
-    grafo.getNo('(-3, -5)')!.peca = 'atacante';
-    grafo.getNo('(-3, -5)')!.equipe = 'pretas';
-
-    grafo.getNo('(3, 5)')!.ocupado = true;
-    grafo.getNo('(3, 5)')!.peca = 'atacante';
-    grafo.getNo('(3, 5)')!.equipe = 'brancas';
-
-    grafo.getNo('(3, -8)')!.ocupado = true;
-    grafo.getNo('(3, -8)')!.peca = 'atacante';
-    grafo.getNo('(3, -8)')!.equipe = 'pretas';
-
-    grafo.getNo('(-3, 8)')!.ocupado = true;
-    grafo.getNo('(-3, 8)')!.peca = 'atacante';
-    grafo.getNo('(-3, 8)')!.equipe = 'brancas';
+    // setupTabuleiro(grafo);
+    setupTabuleiroDidatico(grafo);
 
     super.initState();
   }
@@ -183,9 +117,7 @@ class _TabuleiroState extends State<Tabuleiro>
     super.build(context);
     return Scaffold(
       backgroundColor: AppColors.dark,
-      body: Positioned.fill(
-        child: _buildGrid(context, tipo),
-      ),
+      body: _buildGrid(context, tipo),
     );
   }
 

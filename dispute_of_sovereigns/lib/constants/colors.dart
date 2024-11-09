@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 // Cores:
 class AppColors {
   // Cor de peça ativa:
-  static const Color ativa = Color(0xff577277);
-  static Color ativaFog = const Color(0xff577277).withOpacity(0.5);
+  static const Color ativa = Color(0xC2FFEC7D);
+  static Color ativaFog = const Color(0xC2FFEC7D).withOpacity(0.8);
 
   // Set chess.com tabuleiro padrão:
   static const Color primariaEscura = Color(0xff334224);

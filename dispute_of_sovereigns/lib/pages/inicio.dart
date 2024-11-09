@@ -12,70 +12,217 @@ class _HomeState extends State<Home> {
   void modalInstrucao(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
-        return Padding(padding: const EdgeInsets.only(left: 300, right: 300), child: AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          title: const Center(child: Text("Instruções")),
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("Introdução:", style: TextStyle(
-              fontWeight: FontWeight.bold),),
-              const Text("O Disputa dos Soberanos é um jogo de tabuleiro entre dois jogadores, com 270 casas dispostas em um tabuleiro hexagonal, alternando cores entre claro e escuro. Cada jogador começa com 9 peças: 1 Sentinela; 4 atacantes, 2 escudos e 2 conjuradores, sendo que as peças dos adversário ficam ocultas para o jogador."),
-              const SizedBox(height: 15),
-              const Text("Movimentos das peças:", style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
-              const Text("É permitido movimentar a peça para uma casa vazia ou ocupada por uma peça adversária. Ao movimentar por uma casa ocupada por uma peça adversária, essa peça é eliminada."),
-              const SizedBox(height: 15),
-              const Text("Peças:", style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
-              Column(children: [
-                Row(children: [
-                  Padding(padding:  EdgeInsets.only(right: 10), child: CircleAvatar(child: Image.asset("assets/icons/visao.png", width: 25, height: 25,),),),
-                  const Text("Sentinela: move-se uma casa em qualquer direção em um raio de 1 casa.")
-                ],),
-                Row(children: [
-                  Padding(padding:  EdgeInsets.only(right: 10), child: CircleAvatar(child: Image.asset("assets/icons/assassino.png", width: 25, height: 25,),),),
-                  const Text("Atacante: move-se em qualquer direção em um raio de 2 casas.")
-                ],),
-                Row(children: [
-                  Padding(padding:  EdgeInsets.only(right: 10), child: CircleAvatar(child: Image.asset("assets/icons/escudo.png", width: 25, height: 25,),),),
-                  const Text("Escudo: move-se uma casa em qualquer direção em um raio de 1 casa, exceto nas casas escuras.")
-                ],),
-                Row(children: [
-                  Padding(padding:  EdgeInsets.only(right: 10), child: CircleAvatar(child: Image.asset("assets/icons/feiticeiro2.png", width: 25, height: 25,),),),
-                  const Text("Conjurador: move-se uma casa em qualquer direção em um raio de 2 casas, exceto nas casas claras.")
-                ],),
-              ],),
-              const SizedBox(height: 15),
-              const Text("Função Especial:", style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
-              const Text("Ao mover qualquer peça da equipe, a Sentinela dispara um pulso que revela as peças adversárias em um raio de 6 casas. Dica: O ideal é movimentar a sentinela junto com a equipe para que possa dar direcionamento onde as peças adversárias estão."),
-              const SizedBox(height: 15),
-              const Text("Objetivo:", style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),),
-              const Text("O objetivo é eliminar a sentinela do time adversário ou percorrer o tabuleiro até chegar no ultima casa da base inimiga."),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Fechar"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ))
-         ;
+        return Padding(
+            padding: const EdgeInsets.only(left: 300, right: 300),
+            child: AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              title: const Center(child: Text("Instruções")),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Introdução:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const Text(
+                      "O Disputa dos Soberanos é um jogo de tabuleiro, onde o jogador joga contra a \"CPU\". O tabuleiro conta com 270 casas dispostas em um tabuleiro hexagonal, com as casas alternando cores claras e escuras. Cada jogador começa com 9 peças: 1 Sentinela, 4 Atacantes, 2 Escudos e 2 Conjuradores. Também vale ressaltar que as peças dos adversário ficam ocultas para o jogador.",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Movimentos das peças:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const Text(
+                      "É permitido movimentar uma peça para uma casa que esteja vazia ou que esteja ocupada por uma peça adversária. Ao movimentar para uma casa ocupada por uma peça adversária, a peça do adversário é eliminada.",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Peças:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, top: 4),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    "assets/icons/visao.png",
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                              const Text(
+                                "Sentinela: move-se para uma casa em qualquer direção, em um raio de 1 casa.",
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, top: 4),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    "assets/icons/assassino.png",
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                              const Text(
+                                "Atacante: move-se para uma casa em qualquer direção, em um raio de 2 casas.",
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, top: 4),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    "assets/icons/escudo.png",
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                              const Text(
+                                "Escudo: move-se para uma casa em qualquer direção, em um raio de 1 casa, com exceção das casas escuras.",
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10, top: 4),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Image.asset(
+                                    "assets/icons/feiticeiro2.png",
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                              const Text(
+                                "Conjurador: move-se para uma casa em qualquer direção, em um raio de 2 casas, com exceção das casas claras.",
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Função Especial:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const Text(
+                      "Ao mover qualquer peça da equipe, a Sentinela dispara um pulso que revela as peças adversárias em um raio de 6 casas.",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Dica:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const Text(
+                      "O ideal é movimentar a Sentinela junto com o restante das peças. Pois dessa forma é possível aproveitar da melhor forma possível a habilidade especial de revelação da Sentinela.",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 25),
+                    const Text(
+                      "Objetivo:",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const Text(
+                      "É possível vencer o jogo de duas maneiras:",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    const SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 6),
+                                  child: Icon(Icons.circle,
+                                      size: 8, color: AppColors.dark),
+                                ),
+                                Text(
+                                  "A primeira, é eliminando a Sentinela do time adversário.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 12),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 6),
+                                  child: Icon(Icons.circle,
+                                      size: 8, color: AppColors.dark),
+                                ),
+                                Text(
+                                  "A segunda, é percorrendo o tabuleiro levando a Sentinela até a casa da base inimiga.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: const Text("Fechar"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ));
       },
     );
   }
@@ -169,19 +316,19 @@ class _HomeState extends State<Home> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 18),
-                child: Text(
-                  "Frase daora...",
-                  style: TextStyle(
-                    fontSize: width >= 600 ? 22 : 16,
-                    fontWeight: FontWeight.w200,
-                    fontStyle: FontStyle.italic,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppColors.light,
-                  ),
-                ),
-              ),
+              //   Padding(
+              //     padding: const EdgeInsets.only(bottom: 18, left: 20, right: 20),
+              //     child: Text(
+              //       "Muitas vezes é a mente mais afiada que vence a guerra, não a lâmina mais afiada.",
+              //       style: TextStyle(
+              //         fontSize: width >= 600 ? 22 : 16,
+              //         fontWeight: FontWeight.w200,
+              //         fontStyle: FontStyle.italic,
+              //         overflow: TextOverflow.ellipsis,
+              //         color: AppColors.light,
+              //       ),
+              //     ),
+              //   ),
             ],
           ),
         ),

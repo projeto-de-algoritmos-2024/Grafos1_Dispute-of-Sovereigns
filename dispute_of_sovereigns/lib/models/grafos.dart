@@ -248,19 +248,6 @@ class Grafo {
   }
 
   List<No> bfsPulso(No sentinela) {
-    // // Percorrer todos nós e settar como visiveis a cada 2 segundos com Timer.periodic:
-    // List<No> nos = grafo.adjacencias.keys.toList();
-
-    // Timer.periodic(Duration(milliseconds: 50), (timer) {
-    //   No no = nos.isNotEmpty ? nos.removeAt(0) : nos[0];
-    //   setState(() {
-    // no.visivel = true;
-    // if (nos.length == 1) {
-    //   timer.cancel();
-    // }
-    //   });
-    // });
-
     // Lista para armazenar os Nós na ordem que foram visitados:
     List<No> ordem = [];
 

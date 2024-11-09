@@ -69,9 +69,7 @@ class _RotaVitoriaState extends State<RotaVitoria> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.dark,
-      body: Positioned.fill(
-        child: _buildGrid(context, tipo),
-      ),
+      body: _buildGrid(context, tipo),
     );
   }
 
