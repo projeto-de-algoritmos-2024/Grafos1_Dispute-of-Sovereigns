@@ -19,12 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup do Java
-        uses: actions/setup-java@v3.12.0
-        with:
-          distribution: "oracle"
-          java-version: "17"
-
       - name: Setup do Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -72,7 +66,7 @@ jobs:
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Anexar artefatos à Release
+      - name: Upload APK para Release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
@@ -80,11 +74,20 @@ jobs:
           asset_name: Android-APK
           asset_content_type: application/vnd.android.package-archive
 
-      - name: Upload para Web e Linux
-        if: matrix.platform == 'web' || matrix.platform == 'linux'
+      - name: Upload para Web
+        if: ${{ always() && steps.create_release.outputs.upload_url && hashFiles('**/web/**') }}
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/${{ matrix.platform }}
-          asset_name: ${{ matrix.platform }}-build.zip
+          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/web
+          asset_name: Web-Build.zip
+          asset_content_type: application/zip
+
+      - name: Upload para Linux
+        if: ${{ always() && steps.create_release.outputs.upload_url && hashFiles('**/linux/**') }}
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/linux
+          asset_name: Linux-Build.zip
           asset_content_type: application/zip
