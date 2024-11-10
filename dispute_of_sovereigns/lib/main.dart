@@ -71,6 +71,7 @@ class _JogoState extends State<Jogo> {
           ),
         ),
         body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             RotaVitoria(grafo: grafo),
             Tabuleiro(grafo: grafo),

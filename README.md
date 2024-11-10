@@ -83,6 +83,8 @@ Este guia explica como rodar um build web do Flutter localmente usando Node.js. 
 
 ## Instruções para Rodar
 
+### Web
+
 1. **Download**:  Faça o Download do asset web-build.zip.
 
     Segue o link da [release](https://github.com/projeto-de-algoritmos-2024/Grafos1_Dispute-of-Sovereigns/releases), que também está dísponivel no github. 
@@ -106,6 +108,16 @@ Este guia explica como rodar um build web do Flutter localmente usando Node.js. 
 
 5. **Acesse o App no Navegador**:
    - Segurando a tecla CRTL, clique com o botão esquerdo no link do localhost.
+
+### APK
+
+1. **Download**:  Faça o Download do asset app-release.apk.
+
+    Segue o link da [release](https://github.com/projeto-de-algoritmos-2024/Grafos1_Dispute-of-Sovereigns/releases), que também está dísponivel no github.
+
+<br>
+
+2. **Instalação**: Instale o arquivo APK em um dispositivo Android (Celular ou Emulador).
 
 
 ## Uso 
