@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    name: Build APK, Web e Linux
+    name: Build APK e Web
     runs-on: ubuntu-latest
 
     steps:
@@ -42,18 +42,13 @@ jobs:
         run: flutter build web
         working-directory: ./dispute_of_sovereigns
 
-      - name: Build Linux
-        run: flutter build linux --release
-        working-directory: ./dispute_of_sovereigns
-
       - name: Disponibilizar build para download
         uses: actions/upload-artifact@v3
         with:
-          name: build-apk-web-linux
+          name: build-apk-web
           path: |
             ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
             ${{ github.workspace }}/dispute_of_sovereigns/build/web
-            ${{ github.workspace }}/dispute_of_sovereigns/build/linux
 
   release:
     needs: build
@@ -81,19 +76,9 @@ jobs:
           asset_content_type: application/vnd.android.package-archive
 
       - name: Upload para Web
-        if: ${{ always() && steps.create_release.outputs.upload_url && hashFiles('**/web/**') }}
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/web
           asset_name: Web-Build.zip
-          asset_content_type: application/zip
-
-      - name: Upload para Linux
-        if: ${{ always() && steps.create_release.outputs.upload_url && hashFiles('**/linux/**') }}
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/linux
-          asset_name: Linux-Build.zip
           asset_content_type: application/zip
