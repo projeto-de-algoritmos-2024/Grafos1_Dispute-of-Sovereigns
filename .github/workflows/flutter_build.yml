@@ -60,7 +60,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk,${{ github.workspace }}/dispute_of_sovereigns/build/web-build.zip"
-          tag: v1.0.0
+          tag: v1.0.1
           token: ${{ secrets.TOKEN }}
           
       # Deploy para GitHub Pages
