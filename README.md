@@ -131,8 +131,6 @@ Na seção Jogar, existem duas telas principais:
 ## Apresentação
 [Vídeo de apresentação](https://youtu.be/D_QALLO1cx0)
 
-<iframe width="1280" height="720" src="https://www.youtube.com/embed/D_QALLO1cx0" title="Grafos 1 - Dupla 33" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
 
 
 ## Outros 
