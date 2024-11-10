@@ -49,13 +49,13 @@ jobs:
         with:
           name: Upload da Build
           path: |
-            /build/app/outputs/flutter-apk/app-release.apk
-            /build/web
+            ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
+            ${{ github.workspace }}/dispute_of_sovereigns/build/web
 
-      - name: Create Release
+      - name: Criar Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/web/"
+          artifacts: "${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk,${{ github.workspace }}/dispute_of_sovereigns/build/web"
           tag: v1.0.0
           token: ${{ secrets.TOKEN }}
           

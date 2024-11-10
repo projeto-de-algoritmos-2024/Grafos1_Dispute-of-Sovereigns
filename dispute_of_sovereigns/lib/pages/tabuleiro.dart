@@ -66,8 +66,8 @@ class _TabuleiroState extends State<Tabuleiro>
     grafo = widget.grafo;
     criarNos(grafo, lado);
 
-    // setupTabuleiro(grafo);
-    setupTabuleiroDidatico(grafo);
+    setupTabuleiro(grafo);
+    // setupTabuleiroDidatico(grafo);
 
     super.initState();
   }
