@@ -128,6 +128,13 @@ Na seção Jogar, existem duas telas principais:
 - Rota: Apresenta o caminho da Sentinela até a base adversária e as posições das peças.
 - Partida: Onde você efetivamente irá jogar.
 
+## Apresentação
+[Vídeo de apresentação](https://youtu.be/D_QALLO1cx0)
+
+<iframe width="1280" height="720" src="https://www.youtube.com/embed/D_QALLO1cx0" title="Grafos 1 - Dupla 33" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+
 ## Outros 
 Os códigos principais que implementam a lógica do projeto se encontram no diretório `dispute_of_sovereigns/lib`:
 - No diretório `dispute_of_sovereigns/lib/pages` se encontra códigos relacionados ao front-end.
