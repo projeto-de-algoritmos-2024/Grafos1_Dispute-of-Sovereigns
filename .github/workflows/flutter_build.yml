@@ -47,8 +47,8 @@ jobs:
         with:
           name: build-apk-web
           path: |
-            /dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
-            /dispute_of_sovereigns/build/web
+            /build/app/outputs/flutter-apk/app-release.apk
+            /build/web
 
   release:
     needs: build
@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
+          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
           asset_name: Android-APK
           asset_content_type: application/vnd.android.package-archive
 
@@ -81,7 +81,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: /dispute_of_sovereigns/build/web
+          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/web
           asset_name: Web-Build.zip
           asset_content_type: application/zip
 
@@ -89,4 +89,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: /dispute_of_sovereigns/build/web
+          publish_dir: ${{ github.workspace }}/dispute_of_sovereigns/build/web
