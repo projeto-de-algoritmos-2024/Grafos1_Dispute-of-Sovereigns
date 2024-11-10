@@ -69,24 +69,27 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload APK para Release
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
-          asset_name: Android-APK
-          asset_content_type: application/vnd.android.package-archive
+      - name: Obter ID do Release
+        id: get_release_id
+        run: echo "::set-output name=id::${{ steps.create_release.outputs.id }}"
+        working-directory: ./dispute_of_sovereigns
 
-      - name: Upload Web para Release
-        uses: actions/upload-release-asset@v1
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/dispute_of_sovereigns/build/web
-          asset_name: Web-Build.zip
-          asset_content_type: application/zip
+          path: /build/app/outputs/flutter-apk/app-release.apk
+          name: APK
 
-      - name: Deploy para GitHub Pages (Experimental)
+      - name: Upload Web
+        uses: actions/upload-artifact@v3
+        with:
+          path: /build/web
+          name: Web
+          
+      # Deploy para GitHub Pages
+      - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ github.workspace }}/dispute_of_sovereigns/build/web
+          publish_dir: ./dispute_of_sovereigns/build/web
+          publish_branch: gh-pages
