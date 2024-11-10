@@ -44,18 +44,22 @@ jobs:
         run: flutter build web
         working-directory: ./dispute_of_sovereigns
 
+      - name: Zipar Build Web
+        run: zip -r web-build.zip web
+        working-directory: ./dispute_of_sovereigns/build
+
       - name: Disponibilizar build para download
         uses: actions/upload-artifact@v3
         with:
           name: Upload da Build
           path: |
             ${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk
-            ${{ github.workspace }}/dispute_of_sovereigns/build/web
+            ${{ github.workspace }}/dispute_of_sovereigns/build/web-build.zip
 
       - name: Criar Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk,${{ github.workspace }}/dispute_of_sovereigns/build/web"
+          artifacts: "${{ github.workspace }}/dispute_of_sovereigns/build/app/outputs/flutter-apk/app-release.apk,${{ github.workspace }}/dispute_of_sovereigns/build/web-build.zip"
           tag: v1.0.0
           token: ${{ secrets.TOKEN }}
           
