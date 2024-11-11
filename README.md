@@ -68,9 +68,9 @@ A aplicação de grafos no projeto é observada nos seguintes pontos:
 </div>
 
 
-# Como Rodar o Build Web do Flutter Localmente
+# Como Rodar a Build Web do Flutter Localmente
 
-Este guia explica como rodar um build web do Flutter localmente usando Node.js. Siga as instruções abaixo para configurar o ambiente.
+Este guia explica como rodar a build web do Flutter localmente usando Node.js. Siga as instruções abaixo para configurar o ambiente.
 
 ## Pré-requisitos
 
@@ -118,6 +118,42 @@ Este guia explica como rodar um build web do Flutter localmente usando Node.js. 
 <br>
 
 2. **Instalação**: Instale o arquivo APK em um dispositivo Android (Celular ou Emulador).
+
+
+# Como Rodar o Projeto Web do Flutter Localmente
+
+Este guia explica como rodar um projeto web do Flutter localmente usando Node.js. Siga as instruções abaixo para configurar o ambiente. A diferença entre rodar a build web e o projeto web é que a build web é o projeto já compilado, enquanto o projeto web é o código fonte do projeto.
+
+## Pré-requisitos
+
+1. Flutter SDK: Certifique-se de que o [Flutter SDK](https://docs.flutter.dev/get-started/install) está instalado.
+
+2. Na tela de escolha do primeiro tipo de App, escolha a opção "Web", pois é a mais prática.
+
+- Após a instalação, verifique se o Flutter está funcionando corretamente rodando:
+  ```bash
+  flutter doctor
+  ```
+O comando flutter doctor irá verificar se você possui todas as dependências necessárias para o desenvolvimento Flutter Web.
+
+## Instruções para Rodar
+
+1. **Clone o Repositório**: Clone o [repositório](https://github.com/projeto-de-algoritmos-2024/Grafos1_Dispute-of-Sovereigns) do projeto.
+
+2. **Abra o Projeto**: Navegue até a pasta do projeto `Grafos1_Dispute-of-Sovereigns/dispute_of_sovereigns/`.
+
+3. **Instale as Dependências**:
+   - Com o terminal aberto na pasta do projeto, execute o comando:
+     ```bash
+     flutter pub get
+     ```
+
+4. **Inicie o Servidor**:
+   - Com o terminal ainda na pasta do projeto, execute o comando:
+     ```bash
+     flutter run -d chrome
+     ```
+   - Isso inicia um servidor local e abre o projeto no navegador chrome, é possível utilizar outros navegadores.
 
 
 ## Uso 
